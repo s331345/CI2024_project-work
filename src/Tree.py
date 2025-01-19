@@ -20,33 +20,37 @@ class Tree:
         formula = tree_to_string(self.root, self.numbers) if self.root else "None"
         return (f"Tree(formula={formula}, score={self.fitness_score})")
 
+
     def calculate_fitness(self):
-        """Calcola il valore di fitness per l'albero e lo assegna come attributo."""
+        """
+        Calcola il valore di fitness basato sulla Mean Squared Error (MSE).
+        Penalizza alberi complessi per promuovere soluzioni più semplici.
+        """
         try:
             total_error = 0
-            row_index = 0
-            num_elements = x.shape[1]
+            n_samples = x.shape[0]  # Numero di campioni
 
-            # Calcola l'errore totale
-            for row in x:
-                result = evaluate_expression(self.root, row, self.numbers)
-                if np.isnan(result) or np.isinf(result):
-                    # Penalizza in caso di risultato non valido
+            # Calcola l'errore quadratico totale
+            for i in range(n_samples):
+                prediction = evaluate_expression(self.root, x[i], self.numbers)
+                if np.isnan(prediction) or np.isinf(prediction):
+                    # Penalizza risultati non validi
                     self.fitness_score = -np.inf
                     return
 
-                total_error += np.square(y[row_index] - result)
-                row_index += 1
+                total_error += np.square(y[i] - prediction)
 
-            # Calcola il fitness base (inverso dell'errore medio)
-            fitness_score = round(-float(100 * total_error / num_elements), 10)
+            # Calcola la Mean Squared Error (MSE)
+            mse = total_error / n_samples
 
-            # Penalità per alberi complessi
-            complexity_penalty = self.identifier * 7  # Penalizza per il numero di operazioni
-            self.fitness_score = fitness_score - complexity_penalty
+            # Penalità per la complessità dell'albero
+            complexity_penalty = self.identifier * 10  # Moltiplicatore per la complessità
+
+            # Fitness come valore negativo della MSE penalizzato
+            self.fitness_score = -mse - complexity_penalty
 
         except Exception as e:
-            # Penalizza in caso di errore
+            # Penalizza in caso di errori
             print(f"Errore durante il calcolo del fitness: {e}")
             self.fitness_score = -np.inf
     

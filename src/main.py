@@ -19,6 +19,8 @@ genetic_algorithm = GeneticAlgorithm(population, 10, 1500)
 best_tree = genetic_algorithm.evolve()
 
 
+
+
 # Output del miglior individuo
 if best_tree:
     print(best_tree)

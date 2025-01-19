@@ -39,6 +39,8 @@ class GeneticAlgorithm:
 
             # Aggiorna la popolazione
             self.population.update_population(offspring)
+            
+        
 
         # Restituisce il miglior individuo
         return self.population.individuals[0]
