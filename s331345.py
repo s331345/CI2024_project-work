@@ -29,7 +29,6 @@ def f5(x: np.ndarray) -> np.ndarray:
 def f6(x: np.ndarray) -> np.ndarray:
     return ((x[1] * 1000 / 616) * 1000 / 958) - (x[0] * 1000 / 1440)
 
-
 def f7(x: np.ndarray) -> np.ndarray:
     return np.abs((71 * x[0] * x[0] // 24 * x[1]) // (np.abs(x[0] - x[1]) + np.sin(66)))
 
